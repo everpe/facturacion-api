@@ -13,7 +13,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+.AddJsonOptions(JsonOptions =>
+                    JsonOptions.JsonSerializerOptions.PropertyNamingPolicy = null);
 builder.Services.AddValidatorsFromAssemblyContaining<InsertInvoiceValidation>();
 builder.Services.AddFluentValidation(config => config.RegisterValidatorsFromAssemblyContaining<InsertInvoiceValidation>());
 
@@ -47,6 +49,13 @@ builder.Services.AddDbContext<FacturacionDataContext>(options =>
 builder.Services.AddAutoMapper(typeof(Program));
 // Configurar MediatR
 builder.Services.AddMediatR(typeof(Program).Assembly);
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", policy =>
+    {
+        policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+    });
+});
 
 
 var app = builder.Build();
@@ -59,7 +68,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseCors("CorsPolicy");
 app.UseAuthorization();
 
 app.MapControllers();
