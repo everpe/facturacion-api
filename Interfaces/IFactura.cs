@@ -8,6 +8,7 @@ namespace Facturacion.Api.Interfaces
         Task<InvoiceDto> CreateInvoiceAsync(CreateInvoiceMediator.InvoiceCreateDto request);
         Task<bool> DeleteInvoiceAsync(int id);
         Task<List<InvoiceDto>> GetInvoicesAsync();
+        Task<IEnumerable<SummaryByCityDto>> GetSummaryByCityAsync();
         Task<bool> UpdateInvoiceAsync(UpdateInvoiceMediator.InvoiceUpdateDto request);
     }
 }

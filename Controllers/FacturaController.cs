@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Facturacion.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class FacturaController : ControllerBase
     {
@@ -61,6 +61,16 @@ namespace Facturacion.Api.Controllers
         {
             var command = new DeleteInvoiceMediator.DeleteInvoiceCommand { Id = id };
             return await _mediator.Send(command);
+        }
+
+        /// <summary>
+        /// Permite obtener el resumen de evntas de facturas por ciudad.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IEnumerable<SummaryByCityDto>> GetSummaryInvoicesByCity()
+        {
+            return await _mediator.Send(new GetSummaryMediator.GetSummaryInvoices());
         }
     }
 }

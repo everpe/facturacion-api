@@ -61,5 +61,16 @@ namespace Facturacion.Api.Services
             return true;
         }
 
+        public async Task<IEnumerable<SummaryByCityDto>> GetSummaryByCityAsync()
+        {
+            return await _context.Invoices
+                .GroupBy(f => f.City)
+                .Select(g => new SummaryByCityDto
+                {
+                    City = g.Key,
+                    TotalSold = (decimal)g.Sum(f => f.Value)
+                })
+                .ToListAsync();
+        }
     }
 }
